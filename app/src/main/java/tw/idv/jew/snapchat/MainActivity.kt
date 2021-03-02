@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import androidx.core.app.TaskStackBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -44,10 +45,14 @@ class MainActivity : AppCompatActivity() {
         val manager = notificationManager(channelId, channelName)
 
         val intent = Intent(this, ChatActivity::class.java)
-        val pIntent = PendingIntent.getActivity(this,
+        /*val pIntent = PendingIntent.getActivity(this,
                         0,
                         intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT)
+                        PendingIntent.FLAG_UPDATE_CURRENT)*/
+        val stackBuilder = TaskStackBuilder.create(this).apply {
+            addNextIntentWithParentStack(intent)
+        }
+        val pIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(this)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)

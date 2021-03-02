@@ -2,7 +2,9 @@ package tw.idv.jew.snapchat
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -39,8 +41,13 @@ class MainActivity : AppCompatActivity() {
     private fun makeNotification() {
         val channelId = "love"
         val channelName = "我的最愛"
-        val manager =
-            notificationManager(channelId, channelName)
+        val manager = notificationManager(channelId, channelName)
+
+        val intent = Intent(this, ChatActivity::class.java)
+        val pIntent = PendingIntent.getActivity(this,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(this)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
@@ -49,6 +56,7 @@ class MainActivity : AppCompatActivity() {
             .setSubText("This is info")
             .setWhen(System.currentTimeMillis())
             .setChannelId(channelId)
+                .setContentIntent(pIntent)
 
         manager.notify(1, builder.build())
     }
